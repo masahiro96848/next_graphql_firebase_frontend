@@ -1,0 +1,6 @@
+query Todo {
+  todos {
+    title
+    description
+  }
+}
