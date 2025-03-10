@@ -1,4 +1,4 @@
-import { AuthContextState, ReactNodeProps, User } from '@/types'
+import { AuthContextState, ReactNodeProps, UserType } from '@/common/types'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { getFirebaseApp } from '../firebase'
 import { getAuth, getRedirectResult } from 'firebase/auth'
@@ -9,7 +9,7 @@ const FirebaseAuthContext = createContext<AuthContextState>({
 
 // 認証プロバイダ
 const FirebaseAuthProvider = ({ children }: ReactNodeProps) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const [currentUser, setCurrentUser] = useState<UserType | null>(null)
 
   const firebaseApp = getFirebaseApp()
   const auth = getAuth(firebaseApp)

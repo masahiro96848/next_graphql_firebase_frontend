@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-export type User = {
+export type UserType = {
   displayName: string | null
   phoneNumber: string | null
   photoURL: string | null
@@ -9,25 +9,25 @@ export type User = {
 }
 
 export type AuthContextState = {
-  currentUser: User | null
+  currentUser: UserType | null
 }
 
 export type ReactNodeProps = {
   children?: ReactNode
 }
 
-export type SignInForm = {
+export type SignInFormType = {
   email: string
   password: string
 }
 
-export type SignUpForm = {
-  username: string
+export type SignUpFormType = {
+  name: string
   email: string
   password: string
 }
 
-export type TodoForm = {
+export type TodoType = {
   title: string
   description: string
 }

@@ -1,5 +1,6 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import { getAuth } from 'firebase/auth'
 
 export const createClient = () => {
   const httpLink = createHttpLink({
@@ -10,7 +11,10 @@ export const createClient = () => {
   })
 
   const authLink = setContext((_, prevContext) => {
-    const token = localStorage.getItem('token')
+    const token = getAuth().currentUser?.getIdToken()
+    console.log('==== 開始 ====')
+    console.log(token)
+    console.log('==== 終了 ====')
     return {
       headers: {
         ...prevContext.headers,

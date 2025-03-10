@@ -1,3 +1,4 @@
+import { useTodoQuery } from '@/generated/graphql'
 import Link from 'next/link'
 import { useState } from 'react'
 import { FaEdit, FaTrash } from 'react-icons/fa'
@@ -9,6 +10,8 @@ export const TodoList = () => {
     { title: 'ダミーTodo 3' },
   ])
   const [searchTerm, setSearchTerm] = useState('')
+
+  const { data } = useTodoQuery()
 
   const handleDelete = (index: number) => {
     const newTodos = todos.filter((_, i) => i !== index)
