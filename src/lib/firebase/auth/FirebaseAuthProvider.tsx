@@ -2,6 +2,7 @@ import { AuthContextState, ReactNodeProps, UserType } from '@/common/types'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { getFirebaseApp } from '../firebase'
 import { getAuth, getRedirectResult } from 'firebase/auth'
+import { useRouter } from 'next/router'
 
 const FirebaseAuthContext = createContext<AuthContextState>({
   currentUser: null,
@@ -13,6 +14,7 @@ const FirebaseAuthProvider = ({ children }: ReactNodeProps) => {
 
   const firebaseApp = getFirebaseApp()
   const auth = getAuth(firebaseApp)
+  const router = useRouter()
 
   // authはnullの可能性があるので、useEffectの第二引数にauthを指定しておく
   useEffect(() => {
@@ -26,7 +28,7 @@ const FirebaseAuthProvider = ({ children }: ReactNodeProps) => {
       // onAuthStateChangedはfirebase.Unsubscribeを返すので、ComponentがUnmountされるタイミングでUnsubscribe(登録解除)しておく
       unsubscribed()
     }
-  }, [auth, firebaseApp])
+  }, [auth, firebaseApp, router])
 
   return (
     <FirebaseAuthContext.Provider value={{ currentUser }}>

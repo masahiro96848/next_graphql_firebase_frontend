@@ -10,16 +10,39 @@ export const createClient = () => {
     },
   })
 
-  const authLink = setContext((_, prevContext) => {
-    const token = getAuth().currentUser?.getIdToken()
-    console.log('==== 開始 ====')
-    console.log(token)
-    console.log('==== 終了 ====')
-    return {
-      headers: {
-        ...prevContext.headers,
-        authorization: token ? `Bearer ${token}` : '',
-      },
+  const authLink = setContext(async (_, prevContext) => {
+    const auth = getAuth()
+    const user = auth.currentUser
+
+    if (user) {
+      user
+        .getIdToken()
+        .then((token) => {
+          console.log('Bearer ' + token)
+          // ここでトークンをAPIリクエストのヘッダーに設定します
+          return {
+            headers: {
+              ...prevContext.headers,
+              authorization: token ? `Bearer ${token}` : '',
+            },
+          }
+        })
+        .catch((error) => {
+          console.error('Error getting token:', error)
+          return {
+            headers: {
+              ...prevContext.headers,
+              authorization: '',
+            },
+          }
+        })
+    } else {
+      return {
+        headers: {
+          ...prevContext.headers,
+          authorization: '',
+        },
+      }
     }
   })
 
