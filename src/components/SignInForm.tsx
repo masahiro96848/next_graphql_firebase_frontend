@@ -4,6 +4,7 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import { Button } from './ui/button'
 
 export const SignInForm = () => {
   const router = useRouter()
@@ -60,12 +61,7 @@ export const SignInForm = () => {
             <p className="text-red-500 text-sm">パスワードを入力してください</p>
           )}
         </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
-        >
-          ログイン
-        </button>
+        <Button>ログイン</Button>
       </form>
       <div className="text-center mt-4">
         <Link href="/signup" className="text-blue-500 hover:underline">
