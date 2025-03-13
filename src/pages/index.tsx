@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { AppSidebar } from '@/components/nav/Sidebar/AppSidebar'
 import {
   Breadcrumb,
@@ -25,16 +26,22 @@ import {
 const cardsData = Array.from({ length: 10 }, (_, i) => ({
   title: `Card Title ${i + 1}`,
   description: `This is a description for card ${i + 1}.`,
-  imageUrl: `https://placehold.jp/3697c7/ffffff/360x180.png?text=dummy`, // ネット上のサンプル画像
+  imageUrl: `https://placehold.jp/3697c7/ffffff/360x180.png?text=dummy`,
 }))
 
 export default function Page() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen)
+  }
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar isOpen={isSidebarOpen} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1" />
+          <SidebarTrigger className="-ml-1" onClick={toggleSidebar} />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
             <BreadcrumbList>
@@ -51,7 +58,11 @@ export default function Page() {
           </Breadcrumb>
         </header>
 
-        <div className="cards-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:ml-64 transition-all duration-300">
+        <div
+          className={`cards-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 transition-all duration-300 ${
+            isSidebarOpen ? 'md:ml-64' : 'md:ml-0'
+          }`}
+        >
           {cardsData.map((card, index) => (
             <Card key={index} className="w-full max-w-sm">
               <CardHeader>

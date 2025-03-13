@@ -1,73 +1,118 @@
-import { SignInFormType } from '@/common/types'
-import { FirebaseError } from 'firebase/app'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
-import { Button } from './ui/button'
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form'
+import Link from 'next/link'
+
+type FormValues = {
+  email: string
+  password: string
+}
 
 export const SignInForm = () => {
-  const router = useRouter()
+  // react-hook-formの設定
+  const form = useForm<FormValues>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignInFormType>()
-
-  const handleSignIn = async (data: SignInFormType) => {
-    try {
-      const auth = getAuth()
-      await signInWithEmailAndPassword(auth, data.email, data.password)
-      router.push('/todo')
-    } catch (e) {
-      if (e instanceof FirebaseError) {
-        console.log(e)
-      }
-    }
+  const onSubmit = (data: FormValues) => {
+    console.log(data)
+    // ここにログイン処理を実装
   }
 
   return (
-    <div className="w-full max-w-md bg-white p-8 shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-        ログイン
-      </h2>
-      <form onSubmit={handleSubmit(handleSignIn)} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            メールアドレス
-          </label>
-          <input
-            type="email"
-            {...register('email', { required: true })}
-            className="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {errors.email && (
-            <p className="text-red-500 text-sm">
-              メールアドレスを入力してください
-            </p>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            パスワード
-          </label>
-          <input
-            type="password"
-            {...register('password', { required: true })}
-            className="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {errors.password && (
-            <p className="text-red-500 text-sm">パスワードを入力してください</p>
-          )}
-        </div>
-        <Button>ログイン</Button>
-      </form>
-      <div className="text-center mt-4">
-        <Link href="/signup" className="text-blue-500 hover:underline">
-          アカウントをお持ちでない方はこちら
-        </Link>
-      </div>
-    </div>
+    <Card className="w-full max-w-lg">
+      <CardHeader className="text-center">
+        <CardTitle className="text-2xl">ログイン</CardTitle>
+      </CardHeader>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardContent className="space-y-8 px-8">
+            <FormField
+              control={form.control}
+              name="email"
+              rules={{
+                required: 'メールアドレスを入力してください',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: '有効なメールアドレスを入力してください',
+                },
+              }}
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="email" className="text-base">
+                    メールアドレス
+                  </Label>
+                  <FormControl>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="example@example.com"
+                      className="h-12 text-base"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              rules={{
+                required: 'パスワードを入力してください',
+                minLength: {
+                  value: 6,
+                  message: 'パスワードは6文字以上である必要があります',
+                },
+              }}
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="password" className="text-base">
+                    パスワード
+                  </Label>
+                  <FormControl>
+                    <Input
+                      id="password"
+                      type="password"
+                      className="h-12 text-base"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+          <CardFooter className="pt-12 px-8 pb-8">
+            <Button type="submit" className="w-full h-12 text-base">
+              ログイン
+            </Button>
+          </CardFooter>
+          <div className="flex items-center justify-center">
+            <Link href="/signup" className="text-center text-sm text-gray-500">
+              新規登録はこちら
+            </Link>
+          </div>
+        </form>
+      </Form>
+    </Card>
   )
 }

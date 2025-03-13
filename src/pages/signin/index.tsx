@@ -1,12 +1,13 @@
-import React from 'react'
+import { Header } from '@/components/nav/Header'
 import { SignInForm } from '@/components/SignInForm'
 
-const SignInPage = () => {
+export default function SignInPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <SignInForm />
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main className="flex-1 flex items-center justify-center p-8">
+        <SignInForm />
+      </main>
     </div>
   )
 }
-
-export default SignInPage

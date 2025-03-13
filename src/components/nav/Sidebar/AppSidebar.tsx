@@ -13,6 +13,10 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar'
 
+type SidebarProps = {
+  isOpen: boolean
+}
+
 // This is sample data.
 const data = {
   versions: ['1.0.1', '1.1.0-alpha', '2.0.0-beta1'],
@@ -145,9 +149,9 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ isOpen, ...props }: SidebarProps) {
   return (
-    <Sidebar {...props}>
+    <Sidebar {...props} className={isOpen ? 'open' : 'closed'}>
       <SidebarHeader></SidebarHeader>
       <SidebarContent>
         {data.navMain.map((item) => (

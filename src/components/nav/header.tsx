@@ -1,16 +1,22 @@
-// Header/index.tsx
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
 export const Header = () => {
   return (
-    <div className="fixed flex justify-between px-8 w-screen h-16 bg-teal-400 items-center drop-shadow-2xl border-b border-gray-300 shadow-md">
-      <h1 className="font-bold text-2xl">shadcn-ui TUTORIAL</h1>
-      <div className="flex gap-3">
-        <Button variant="outline">
-          <a href="https://ui.shadcn.com/docs">公式 Document</a>
-        </Button>
-        <Button>menu</Button>
+    <header className="border-b">
+      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <Link href="/" className="text-xl font-bold">
+          YourLogo
+        </Link>
+        <nav className="flex items-center gap-4">
+          <Link href="/">ホーム</Link>
+          <Link href="/about">会社概要</Link>
+          <Link href="/contact">お問い合わせ</Link>
+          <Button variant="outline" size="sm">
+            サインアップ
+          </Button>
+        </nav>
       </div>
-    </div>
+    </header>
   )
 }
