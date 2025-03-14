@@ -24,7 +24,6 @@ type FormValues = {
 }
 
 export const SignInForm = () => {
-  // react-hook-formの設定
   const form = useForm<FormValues>({
     defaultValues: {
       email: '',
@@ -32,10 +31,7 @@ export const SignInForm = () => {
     },
   })
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data)
-    // ここにログイン処理を実装
-  }
+  const handleSignIn = async (data: FormValues) => {}
 
   return (
     <Card className="w-full max-w-lg">
@@ -43,7 +39,7 @@ export const SignInForm = () => {
         <CardTitle className="text-2xl">ログイン</CardTitle>
       </CardHeader>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(handleSignIn)}>
           <CardContent className="space-y-8 px-8">
             <FormField
               control={form.control}

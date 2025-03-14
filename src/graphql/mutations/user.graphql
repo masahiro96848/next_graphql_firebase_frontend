@@ -5,3 +5,11 @@ mutation CreateUser($input: CreateUserInput!) {
     firebaseUId
   }
 }
+
+mutation SignIn($input: SignInInput!) {
+  signIn(input: $input) {
+    email
+    name
+    firebaseUId
+  }
+}

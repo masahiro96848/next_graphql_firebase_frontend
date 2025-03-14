@@ -9,11 +9,11 @@ export const Header = () => {
           YourLogo
         </Link>
         <nav className="flex items-center gap-4">
-          <Link href="/">ホーム</Link>
-          <Link href="/about">会社概要</Link>
-          <Link href="/contact">お問い合わせ</Link>
+          <Button size="sm">
+            <Link href="/signin">ログイン</Link>
+          </Button>
           <Button variant="outline" size="sm">
-            サインアップ
+            <Link href="/signup">サインアップ</Link>
           </Button>
         </nav>
       </div>

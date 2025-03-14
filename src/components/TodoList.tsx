@@ -12,6 +12,7 @@ export const TodoList = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const { data } = useTodoQuery()
+  console.log(data?.todos)
 
   const handleDelete = (index: number) => {
     const newTodos = todos.filter((_, i) => i !== index)
@@ -23,7 +24,7 @@ export const TodoList = () => {
   )
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md mx-auto pt-16">
       <Link href="/todo/create">
         <button className="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition">
           Todoを作成
