@@ -1,0 +1,14 @@
+mutation SignUp($input: CreateSignUpInput!) {
+  signUp(input: $input) {
+    email
+    name
+    firebaseUId
+  }
+}
+
+mutation SignIn($email: String!, $password: String!) {
+  signIn(email: $email, password: $password) {
+    email
+    firebaseUId
+  }
+}

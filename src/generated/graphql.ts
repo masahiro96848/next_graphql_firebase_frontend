@@ -18,24 +18,23 @@ export type Scalars = {
   DateTime: { input: any; output: any; }
 };
 
-export type CreateTodoInput = {
-  description?: InputMaybe<Scalars['String']['input']>;
-  title: Scalars['String']['input'];
-  userId: Scalars['String']['input'];
-};
-
-export type CreateUserInput = {
+export type CreateSignUpInput = {
   email: Scalars['String']['input'];
   firebaseUId: Scalars['String']['input'];
   name: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
+export type CreateTodoInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  title: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
 export type Mutation = {
   createTodo: TodoModel;
-  createUser: UserModel;
-  deleteUser: UserModel;
-  updateUser: UserModel;
+  signIn: UserModel;
+  signUp: UserModel;
 };
 
 
@@ -44,19 +43,14 @@ export type MutationCreateTodoArgs = {
 };
 
 
-export type MutationCreateUserArgs = {
-  input: CreateUserInput;
+export type MutationSignInArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 
-export type MutationDeleteUserArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type MutationUpdateUserArgs = {
-  id: Scalars['String']['input'];
-  name: Scalars['String']['input'];
+export type MutationSignUpArgs = {
+  input: CreateSignUpInput;
 };
 
 export type Query = {
@@ -87,6 +81,21 @@ export type UserModel = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type SignUpMutationVariables = Exact<{
+  input: CreateSignUpInput;
+}>;
+
+
+export type SignUpMutation = { signUp: { email: string, name: string, firebaseUId: string } };
+
+export type SignInMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+}>;
+
+
+export type SignInMutation = { signIn: { email: string, firebaseUId: string } };
+
 export type CreateTodoMutationVariables = Exact<{
   input: CreateTodoInput;
 }>;
@@ -94,19 +103,82 @@ export type CreateTodoMutationVariables = Exact<{
 
 export type CreateTodoMutation = { createTodo: { title: string, description?: string | null, userId: string } };
 
-export type CreateUserMutationVariables = Exact<{
-  input: CreateUserInput;
-}>;
-
-
-export type CreateUserMutation = { createUser: { email: string, name: string, firebaseUId: string } };
-
 export type TodoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TodoQuery = { todos: Array<{ title: string, description?: string | null }> };
 
 
+export const SignUpDocument = gql`
+    mutation SignUp($input: CreateSignUpInput!) {
+  signUp(input: $input) {
+    email
+    name
+    firebaseUId
+  }
+}
+    `;
+export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMutationVariables>;
+
+/**
+ * __useSignUpMutation__
+ *
+ * To run a mutation, you first call `useSignUpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignUpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signUpMutation, { data, loading, error }] = useSignUpMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignUpMutation, SignUpMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, options);
+      }
+export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
+export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
+export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const SignInDocument = gql`
+    mutation SignIn($email: String!, $password: String!) {
+  signIn(email: $email, password: $password) {
+    email
+    firebaseUId
+  }
+}
+    `;
+export type SignInMutationFn = Apollo.MutationFunction<SignInMutation, SignInMutationVariables>;
+
+/**
+ * __useSignInMutation__
+ *
+ * To run a mutation, you first call `useSignInMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignInMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signInMutation, { data, loading, error }] = useSignInMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useSignInMutation(baseOptions?: Apollo.MutationHookOptions<SignInMutation, SignInMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignInMutation, SignInMutationVariables>(SignInDocument, options);
+      }
+export type SignInMutationHookResult = ReturnType<typeof useSignInMutation>;
+export type SignInMutationResult = Apollo.MutationResult<SignInMutation>;
+export type SignInMutationOptions = Apollo.BaseMutationOptions<SignInMutation, SignInMutationVariables>;
 export const CreateTodoDocument = gql`
     mutation CreateTodo($input: CreateTodoInput!) {
   createTodo(input: $input) {
@@ -142,41 +214,6 @@ export function useCreateTodoMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateTodoMutationHookResult = ReturnType<typeof useCreateTodoMutation>;
 export type CreateTodoMutationResult = Apollo.MutationResult<CreateTodoMutation>;
 export type CreateTodoMutationOptions = Apollo.BaseMutationOptions<CreateTodoMutation, CreateTodoMutationVariables>;
-export const CreateUserDocument = gql`
-    mutation CreateUser($input: CreateUserInput!) {
-  createUser(input: $input) {
-    email
-    name
-    firebaseUId
-  }
-}
-    `;
-export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
-
-/**
- * __useCreateUserMutation__
- *
- * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateUserMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, options);
-      }
-export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
-export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
-export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
 export const TodoDocument = gql`
     query Todo {
   todos {
