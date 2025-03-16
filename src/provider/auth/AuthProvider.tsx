@@ -1,15 +1,15 @@
 import { AuthContextState, ReactNodeProps, UserType } from '@/common/types'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { getFirebaseApp } from '../firebase'
+import { getFirebaseApp } from '@/lib/firebase/firebase'
 import { getAuth, getRedirectResult } from 'firebase/auth'
 import { useRouter } from 'next/router'
 
-const FirebaseAuthContext = createContext<AuthContextState>({
+const AuthContext = createContext<AuthContextState>({
   currentUser: null,
 })
 
 // 認証プロバイダ
-const FirebaseAuthProvider = ({ children }: ReactNodeProps) => {
+const AuthProvider = ({ children }: ReactNodeProps) => {
   const [currentUser, setCurrentUser] = useState<UserType | null>(null)
 
   const firebaseApp = getFirebaseApp()
@@ -31,12 +31,12 @@ const FirebaseAuthProvider = ({ children }: ReactNodeProps) => {
   }, [auth, firebaseApp, router])
 
   return (
-    <FirebaseAuthContext.Provider value={{ currentUser }}>
+    <AuthContext.Provider value={{ currentUser }}>
       {children}
-    </FirebaseAuthContext.Provider>
+    </AuthContext.Provider>
   )
 }
 
-export { FirebaseAuthContext, FirebaseAuthProvider }
+export { AuthContext, AuthProvider }
 
-export const useFirebaseAuthContext = () => useContext(FirebaseAuthContext)
+export const useAuthContext = () => useContext(AuthContext)

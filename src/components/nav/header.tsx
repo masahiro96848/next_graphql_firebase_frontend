@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { useFirebaseAuthContext } from '@/lib/firebase/auth/FirebaseAuthProvider'
 import { useAuth } from '@/hooks/useAuth'
+import { useAuthContext } from '@/provider/auth/AuthProvider'
 
 export const Header = () => {
-  const { currentUser } = useFirebaseAuthContext()
+  const { currentUser } = useAuthContext()
   const { firebaseSignOut } = useAuth()
 
   return (
