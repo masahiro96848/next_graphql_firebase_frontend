@@ -1,11 +1,12 @@
-import { TodoForm } from '@/components/TodoForm'
+import { TodoCreateForm } from '@/components/TodoCreateForm'
+import { SignInedPageLayout } from '@/components/page/layout/SignInedPageLayout'
 import React from 'react'
 
 const TodoPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <TodoForm />
-    </div>
+    <SignInedPageLayout>
+      <TodoCreateForm />
+    </SignInedPageLayout>
   )
 }
 

@@ -1,4 +1,4 @@
-import { useTodoQuery } from '@/generated/graphql'
+import { useTodosQuery } from '@/generated/graphql'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { FaEdit, FaTrash } from 'react-icons/fa'
@@ -7,7 +7,7 @@ export const TodoList = () => {
   const [todos, setTodos] = useState<{ title: string }[]>([])
   const [searchTerm, setSearchTerm] = useState('')
 
-  const { data } = useTodoQuery()
+  const { data } = useTodosQuery()
 
   const handleDelete = (index: number) => {
     const newTodos = todos.filter((_, i) => i !== index)
@@ -39,14 +39,16 @@ export const TodoList = () => {
         className="mt-4 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <ul className="mt-4 space-y-2">
-        {filteredTodos.map((todo, index) => (
+        {data?.todos.map((todo, index) => (
           <li
             key={index}
             className="flex justify-between items-center p-2 border border-gray-300 rounded-md"
           >
             <span>{todo.title}</span>
             <div className="flex space-x-2">
-              <FaEdit className="text-blue-500 cursor-pointer" />
+              <Link href={`/todo/edit/${todo.id}`}>
+                <FaEdit className="text-blue-500 cursor-pointer text-lg" />
+              </Link>
               <FaTrash
                 className="text-red-500 cursor-pointer"
                 onClick={() => handleDelete(index)}

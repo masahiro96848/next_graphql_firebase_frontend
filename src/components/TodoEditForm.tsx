@@ -1,31 +1,36 @@
-import { useCreateTodoMutation } from '@/generated/graphql'
-import { getAuth } from 'firebase/auth'
+import { useUpdateTodoMutation } from '@/generated/graphql'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
-import { TodoType } from '@/common/types'
-export const TodoForm = () => {
-  const router = useRouter()
-  const [createTodo] = useCreateTodoMutation()
+import { TodoFormType } from '@/common/types'
 
-  const auth = getAuth()
+type TodoEditFormProps = {
+  todo: TodoFormType
+}
+
+export const TodoEditForm = ({ todo }: TodoEditFormProps) => {
+  const router = useRouter()
+  const [updateTodo] = useUpdateTodoMutation()
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<TodoType>()
+  } = useForm<TodoFormType>({
+    defaultValues: todo,
+  })
 
-  const handleCreateTodo = async (data: TodoType) => {
+  const handleUpdateTodo = async (data: TodoFormType) => {
     try {
-      await createTodo({
+      await updateTodo({
         variables: {
+          id: todo.id as string,
           input: {
             title: data.title,
             description: data.description,
-            userId: auth.currentUser?.uid || '',
           },
         },
       })
-      router.push('/')
+      router.push('/todo')
     } catch (e) {
       if (e) {
         console.log(e)
@@ -36,9 +41,9 @@ export const TodoForm = () => {
   return (
     <div className="w-full max-w-md bg-white p-8 shadow-md rounded-lg">
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-        Todo作成
+        Todo編集
       </h2>
-      <form onSubmit={handleSubmit(handleCreateTodo)} className="space-y-4">
+      <form onSubmit={handleSubmit(handleUpdateTodo)} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">
             タイトル
@@ -70,7 +75,7 @@ export const TodoForm = () => {
           type="submit"
           className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition"
         >
-          投稿する
+          更新する
         </button>
       </form>
     </div>

@@ -1,5 +1,14 @@
-query Todo {
+query Todo($id: String!) {
+  todo(id: $id) {
+    id
+    title
+    description
+  }
+}
+
+query Todos {
   todos {
+    id
     title
     description
   }

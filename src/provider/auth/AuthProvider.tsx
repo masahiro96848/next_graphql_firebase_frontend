@@ -21,6 +21,8 @@ const AuthProvider = ({ children }: ReactNodeProps) => {
     const unsubscribed = auth.onAuthStateChanged((user) => {
       if (user) {
         setCurrentUser(user)
+      } else {
+        router.push('/signin') // 認証情報がない場合は/signinにリダイレクト
       }
       getRedirectResult(getAuth(firebaseApp))
     })
