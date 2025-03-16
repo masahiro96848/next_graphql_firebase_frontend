@@ -1,4 +1,7 @@
-schema: 'http://localhost:8080/graphql'
+schema:
+  - http://localhost:8080/graphql:
+      headers:
+        Content-Type: application/json
 documents: 'src/**/*.graphql'
 generates:
   src/generated/graphql.ts:
@@ -10,3 +13,16 @@ generates:
       skipTypeNameForRoot: true
       skipTypename: true
       inlineFragmentTypes: 'combine'
+      reactApolloVersion: 3
+      withHooks: true
+      dedupeFragments: true
+      apolloClientVersion: 3
+      # Apollo Client の設定
+      customSchemaPaths:
+        - src/apollo/client.ts
+      contextType: 'any'
+      # リクエストの設定
+      defaultBaseOptions:
+        context:
+          fetchOptions:
+            credentials: 'include'

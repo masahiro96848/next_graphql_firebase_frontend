@@ -1,7 +1,12 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { useFirebaseAuthContext } from '@/lib/firebase/auth/FirebaseAuthProvider'
+import { useAuth } from '@/hooks/useAuth'
 
 export const Header = () => {
+  const { currentUser } = useFirebaseAuthContext()
+  const { firebaseSignOut } = useAuth()
+
   return (
     <header className="border-b">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -9,12 +14,29 @@ export const Header = () => {
           YourLogo
         </Link>
         <nav className="flex items-center gap-4">
-          <Button size="sm">
-            <Link href="/signin">ログイン</Link>
-          </Button>
-          <Button variant="outline" size="sm">
-            <Link href="/signup">サインアップ</Link>
-          </Button>
+          {currentUser ? (
+            <>
+              <Button size="sm">
+                <Link href="/dashboard">ダッシュボード</Link>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => firebaseSignOut()}
+              >
+                ログアウト
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button size="sm">
+                <Link href="/signin">ログイン</Link>
+              </Button>
+              <Button variant="outline" size="sm">
+                <Link href="/signup">サインアップ</Link>
+              </Button>
+            </>
+          )}
         </nav>
       </div>
     </header>

@@ -1,18 +1,13 @@
 import { useTodoQuery } from '@/generated/graphql'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 
 export const TodoList = () => {
-  const [todos, setTodos] = useState<{ title: string }[]>([
-    { title: 'ダミーTodo 1' },
-    { title: 'ダミーTodo 2' },
-    { title: 'ダミーTodo 3' },
-  ])
+  const [todos, setTodos] = useState<{ title: string }[]>([])
   const [searchTerm, setSearchTerm] = useState('')
 
   const { data } = useTodoQuery()
-  console.log(data?.todos)
 
   const handleDelete = (index: number) => {
     const newTodos = todos.filter((_, i) => i !== index)
@@ -22,6 +17,12 @@ export const TodoList = () => {
   const filteredTodos = todos.filter((todo) =>
     todo.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
+
+  useEffect(() => {
+    if (data?.todos) {
+      setTodos(data.todos)
+    }
+  }, [data])
 
   return (
     <div className="w-full max-w-md mx-auto pt-16">

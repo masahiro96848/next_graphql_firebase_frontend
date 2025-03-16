@@ -1,6 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import { FC, useMemo } from 'react'
-import { createClient } from './apolloClient'
+import { createClient } from './client'
 
 type Props = {
   children: React.ReactNode
