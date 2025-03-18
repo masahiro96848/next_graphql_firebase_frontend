@@ -12,3 +12,9 @@ mutation UpdateTodo($id: String!, $input: UpdateTodoInput!) {
     description
   }
 }
+
+mutation DeleteTodo($id: String!) {
+  deleteTodo(id: $id) {
+    id
+  }
+}

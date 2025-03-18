@@ -1,17 +1,19 @@
-import { useTodosQuery } from '@/generated/graphql'
+import { useDeleteTodoMutation, useTodosQuery } from '@/generated/graphql'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 
 export const TodoList = () => {
+  const [deleteTodo] = useDeleteTodoMutation()
   const [todos, setTodos] = useState<{ title: string }[]>([])
   const [searchTerm, setSearchTerm] = useState('')
 
   const { data } = useTodosQuery()
 
-  const handleDelete = (index: number) => {
-    const newTodos = todos.filter((_, i) => i !== index)
-    setTodos(newTodos)
+  const handleDeleteTodo = (id: string) => {
+    if (confirm('本当に削除しますか？')) {
+      deleteTodo({ variables: { id } })
+    }
   }
 
   const filteredTodos = todos.filter((todo) =>
@@ -51,7 +53,7 @@ export const TodoList = () => {
               </Link>
               <FaTrash
                 className="text-red-500 cursor-pointer"
-                onClick={() => handleDelete(index)}
+                onClick={() => handleDeleteTodo(todo.id)}
               />
             </div>
           </li>
