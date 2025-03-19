@@ -5,8 +5,8 @@ import { FaEdit, FaTrash } from 'react-icons/fa'
 
 export const TodoList = () => {
   const [deleteTodo] = useDeleteTodoMutation()
-  const [todos, setTodos] = useState<{ title: string }[]>([])
-  const [searchTerm, setSearchTerm] = useState('')
+  const [todos, setTodos] = useState<{ id: string; title: string }[]>([])
+  const [filterTodos, setFilterTodos] = useState('')
 
   const { data } = useTodosQuery()
 
@@ -16,8 +16,8 @@ export const TodoList = () => {
     }
   }
 
-  const filteredTodos = todos.filter((todo) =>
-    todo.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const filterTodo = todos.filter((todo) =>
+    todo.title.toLowerCase().includes(filterTodos.toLowerCase())
   )
 
   useEffect(() => {
@@ -36,12 +36,12 @@ export const TodoList = () => {
       <input
         type="text"
         placeholder="検索"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        value={filterTodos}
+        onChange={(e) => setFilterTodos(e.target.value)}
         className="mt-4 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <ul className="mt-4 space-y-2">
-        {data?.todos.map((todo, index) => (
+        {filterTodo.map((todo, index) => (
           <li
             key={index}
             className="flex justify-between items-center p-2 border border-gray-300 rounded-md"
