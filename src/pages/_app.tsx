@@ -1,14 +1,17 @@
 import { AppApolloProvider } from '@/apollo/provider'
-import { AuthProvider } from '@/provider/auth/AuthProvider'
+import { AuthRouterProvider } from '@/provider/auth/AuthRouterContext'
+import { UserRouterProvider } from '@/provider/auth/UserRouterProvider'
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <AppApolloProvider>
-      <AuthProvider>
-        <Component {...pageProps} />
-      </AuthProvider>
-    </AppApolloProvider>
+    <AuthRouterProvider>
+      <AppApolloProvider>
+        <UserRouterProvider>
+          <Component {...pageProps} />
+        </UserRouterProvider>
+      </AppApolloProvider>
+    </AuthRouterProvider>
   )
 }

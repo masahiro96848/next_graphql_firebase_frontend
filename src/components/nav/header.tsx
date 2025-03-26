@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
-import { useAuthContext } from '@/provider/auth/AuthProvider'
+import { useAuthUserContext } from '@/provider/auth/AuthUserContext'
 
 export const Header = () => {
-  const { currentUser } = useAuthContext()
+  const { authUser } = useAuthUserContext()
   const { firebaseSignOut } = useAuth()
 
   return (
@@ -14,7 +14,7 @@ export const Header = () => {
           YourLogo
         </Link>
         <nav className="flex items-center gap-4">
-          {currentUser ? (
+          {authUser ? (
             <>
               <Button size="sm">
                 <Link href="/dashboard">ダッシュボード</Link>
