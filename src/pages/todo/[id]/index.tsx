@@ -1,4 +1,4 @@
-import { PageRootLayout } from '@/components/page/layout/PageRootLayout'
+import { PageRootLayout } from '@/components/organisms/layout/PageRootLayout'
 import { TodoDetailForm } from '@/components/TodoDetailForm'
 import { useRouter } from 'next/router'
 import React from 'react'

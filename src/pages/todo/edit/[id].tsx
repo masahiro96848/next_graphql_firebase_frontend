@@ -1,4 +1,4 @@
-import { PageRootLayout } from '@/components/page/layout/PageRootLayout'
+import { PageRootLayout } from '@/components/organisms/layout/PageRootLayout'
 import { TodoEditForm } from '@/components/TodoEditForm'
 import { useTodoQuery } from '@/generated/graphql'
 import { useRouter } from 'next/router'
