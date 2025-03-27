@@ -11,7 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from '@/components/ui/sidebar'
+} from '@/components/atoms/sidebar'
 
 type SidebarProps = {
   isOpen: boolean

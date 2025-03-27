@@ -1,5 +1,5 @@
 import React from 'react'
-import { Sidebar, SidebarProvider, SidebarTrigger } from '../../ui/sidebar'
+import { Sidebar, SidebarProvider, SidebarTrigger } from '../../atoms/sidebar'
 
 type Props = {
   children: React.ReactNode

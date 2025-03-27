@@ -5,11 +5,11 @@ import {
   CardTitle,
   CardContent,
   CardFooter,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { FormControl, FormItem, FormMessage } from '@/components/ui/form'
+} from '@/components/atoms/card'
+import { Input } from '@/components/atoms/input'
+import { Button } from '@/components/atoms/button'
+import { Label } from '@/components/atoms/label'
+import { FormControl, FormItem, FormMessage } from '@/components/atoms/form'
 import Link from 'next/link'
 import { useSignUpMutation } from '@/generated/graphql'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'

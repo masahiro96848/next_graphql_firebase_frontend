@@ -1,5 +1,5 @@
 import { PageRootLayout } from '@/components/organisms/layout/PageRootLayout'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/atoms/button'
 import { getAuth, signOut } from 'firebase/auth'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
