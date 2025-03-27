@@ -5,10 +5,3 @@ mutation SignUp($input: CreateSignUpInput!) {
     firebaseUId
   }
 }
-
-mutation SignIn($email: String!, $password: String!) {
-  signIn(email: $email, password: $password) {
-    email
-    firebaseUId
-  }
-}

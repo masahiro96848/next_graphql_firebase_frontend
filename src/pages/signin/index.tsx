@@ -1,10 +1,10 @@
 import { NonSignInPageLayout } from '@/components/organisms/layout/NonSignInPageLayout'
-import { SignInForm } from '@/components/SignInForm'
+import { SignInPresenter } from '@/components/pages/signIn/presenter'
 
 export default function SignInPage() {
   return (
     <NonSignInPageLayout>
-      <SignInForm />
+      <SignInPresenter />
     </NonSignInPageLayout>
   )
 }

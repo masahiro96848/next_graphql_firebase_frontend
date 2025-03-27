@@ -1,4 +1,3 @@
-import { useForm } from 'react-hook-form'
 import {
   Card,
   CardHeader,
@@ -17,47 +16,26 @@ import {
   FormMessage,
 } from '@/components/atoms/form'
 import Link from 'next/link'
-import { useSignInMutation } from '@/generated/graphql'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { useRouter } from 'next/router'
+import { UseFormReturn } from 'react-hook-form'
 
 type SignInFormValues = {
   email: string
   password: string
 }
 
-export const SignInForm = () => {
-  const router = useRouter()
-  const [signIn] = useSignInMutation()
-  const form = useForm<SignInFormValues>({
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  })
+type PresenterProps = {
+  form: UseFormReturn<SignInFormValues>
+  onSubmit: (data: SignInFormValues) => Promise<void>
+}
 
-  const handleSignIn = async (data: SignInFormValues) => {
-    try {
-      const auth = getAuth()
-      // firebaseでログイン
-      await signInWithEmailAndPassword(auth, data.email, data.password)
-
-      await signIn({
-        variables: { email: data.email, password: data.password },
-      })
-      router.push('/')
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
+export const SignInForm = ({ form, onSubmit }: PresenterProps) => {
   return (
     <Card className="w-full max-w-lg">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl">ログイン</CardTitle>
       </CardHeader>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSignIn)}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent className="space-y-8 px-8">
             <FormField
               control={form.control}
