@@ -31,7 +31,7 @@ export const TodoCreateForm = () => {
   }
 
   return (
-    <div className="w-full max-w-md bg-white p-8 shadow-md rounded-lg">
+    <div className="w-full max-w-md bg-white p-8 shadow-md rounded-lg mx-auto mt-8 mb-8">
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
         Todo作成
       </h2>
