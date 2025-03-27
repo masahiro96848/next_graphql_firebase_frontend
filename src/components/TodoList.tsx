@@ -2,6 +2,7 @@ import { useDeleteTodoMutation, useTodosQuery } from '@/generated/graphql'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { FaEdit, FaTrash } from 'react-icons/fa'
+import { useRouter } from 'next/router'
 
 export const TodoList = () => {
   const [deleteTodo] = useDeleteTodoMutation()
@@ -9,6 +10,7 @@ export const TodoList = () => {
   const [filterTodos, setFilterTodos] = useState('')
 
   const { data } = useTodosQuery()
+  const router = useRouter()
 
   const handleDeleteTodo = (id: string) => {
     if (confirm('本当に削除しますか？')) {
@@ -44,16 +46,23 @@ export const TodoList = () => {
         {filterTodo.map((todo, index) => (
           <li
             key={index}
-            className="flex justify-between items-center p-2 border border-gray-300 rounded-md"
+            className="flex justify-between items-center p-4 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer"
+            onClick={() => router.push(`/todo/${todo.id}`)}
           >
-            <span>{todo.title}</span>
-            <div className="flex space-x-2">
-              <Link href={`/todo/edit/${todo.id}`}>
-                <FaEdit className="text-blue-500 cursor-pointer text-lg" />
+            <span className="flex-grow text-lg">{todo.title}</span>
+            <div className="flex space-x-4">
+              <Link
+                href={`/todo/edit/${todo.id}`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <FaEdit className="text-blue-500 cursor-pointer text-2xl hover:text-blue-600" />
               </Link>
               <FaTrash
-                className="text-red-500 cursor-pointer"
-                onClick={() => handleDeleteTodo(todo.id)}
+                className="text-red-500 cursor-pointer text-2xl hover:text-red-600"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleDeleteTodo(todo.id)
+                }}
               />
             </div>
           </li>
