@@ -35,6 +35,7 @@ export type Mutation = {
   deleteTodo: TodoModel;
   signIn: UserModel;
   signUp: UserModel;
+  updateCompleted: TodoModel;
   updateTodo: TodoModel;
 };
 
@@ -57,6 +58,12 @@ export type MutationSignInArgs = {
 
 export type MutationSignUpArgs = {
   input: CreateSignUpInput;
+};
+
+
+export type MutationUpdateCompletedArgs = {
+  completed: Scalars['Boolean']['input'];
+  id: Scalars['String']['input'];
 };
 
 
@@ -141,17 +148,25 @@ export type DeleteTodoMutationVariables = Exact<{
 
 export type DeleteTodoMutation = { deleteTodo: { id: string } };
 
+export type UpdateCompletedMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+  completed: Scalars['Boolean']['input'];
+}>;
+
+
+export type UpdateCompletedMutation = { updateCompleted: { id: string, completed: boolean } };
+
 export type TodoQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type TodoQuery = { todo: { id: string, title: string, description?: string | null } };
+export type TodoQuery = { todo: { id: string, title: string, description?: string | null, completed: boolean } };
 
 export type TodosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TodosQuery = { todos: Array<{ id: string, title: string, description?: string | null }> };
+export type TodosQuery = { todos: Array<{ id: string, title: string, description?: string | null, completed: boolean }> };
 
 
 export const SignUpDocument = gql`
@@ -327,12 +342,48 @@ export function useDeleteTodoMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteTodoMutationHookResult = ReturnType<typeof useDeleteTodoMutation>;
 export type DeleteTodoMutationResult = Apollo.MutationResult<DeleteTodoMutation>;
 export type DeleteTodoMutationOptions = Apollo.BaseMutationOptions<DeleteTodoMutation, DeleteTodoMutationVariables>;
+export const UpdateCompletedDocument = gql`
+    mutation UpdateCompleted($id: String!, $completed: Boolean!) {
+  updateCompleted(id: $id, completed: $completed) {
+    id
+    completed
+  }
+}
+    `;
+export type UpdateCompletedMutationFn = Apollo.MutationFunction<UpdateCompletedMutation, UpdateCompletedMutationVariables>;
+
+/**
+ * __useUpdateCompletedMutation__
+ *
+ * To run a mutation, you first call `useUpdateCompletedMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCompletedMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCompletedMutation, { data, loading, error }] = useUpdateCompletedMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      completed: // value for 'completed'
+ *   },
+ * });
+ */
+export function useUpdateCompletedMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCompletedMutation, UpdateCompletedMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCompletedMutation, UpdateCompletedMutationVariables>(UpdateCompletedDocument, options);
+      }
+export type UpdateCompletedMutationHookResult = ReturnType<typeof useUpdateCompletedMutation>;
+export type UpdateCompletedMutationResult = Apollo.MutationResult<UpdateCompletedMutation>;
+export type UpdateCompletedMutationOptions = Apollo.BaseMutationOptions<UpdateCompletedMutation, UpdateCompletedMutationVariables>;
 export const TodoDocument = gql`
     query Todo($id: String!) {
   todo(id: $id) {
     id
     title
     description
+    completed
   }
 }
     `;
@@ -375,6 +426,7 @@ export const TodosDocument = gql`
     id
     title
     description
+    completed
   }
 }
     `;

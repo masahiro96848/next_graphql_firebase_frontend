@@ -3,6 +3,7 @@ query Todo($id: String!) {
     id
     title
     description
+    completed
   }
 }
 
@@ -11,5 +12,6 @@ query Todos {
     id
     title
     description
+    completed
   }
 }

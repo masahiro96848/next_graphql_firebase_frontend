@@ -1,13 +1,23 @@
-import { useDeleteTodoMutation, useTodosQuery } from '@/generated/graphql'
+import {
+  useDeleteTodoMutation,
+  useTodosQuery,
+  useUpdateCompletedMutation,
+} from '@/generated/graphql'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { useRouter } from 'next/router'
 
+type TabType = 'all' | 'completed' | 'active'
+
 export const TodoList = () => {
   const [deleteTodo] = useDeleteTodoMutation()
-  const [todos, setTodos] = useState<{ id: string; title: string }[]>([])
+  const [updateCompleted] = useUpdateCompletedMutation()
+  const [todos, setTodos] = useState<
+    { id: string; title: string; completed: boolean }[]
+  >([])
   const [filterTodos, setFilterTodos] = useState('')
+  const [activeTab, setActiveTab] = useState<TabType>('all')
 
   const { data } = useTodosQuery()
   const router = useRouter()
@@ -18,13 +28,40 @@ export const TodoList = () => {
     }
   }
 
-  const filterTodo = todos.filter((todo) =>
-    todo.title.toLowerCase().includes(filterTodos.toLowerCase())
-  )
+  const handleToggleCompleted = async (
+    id: string,
+    currentCompleted: boolean
+  ) => {
+    try {
+      await updateCompleted({
+        variables: { id, completed: !currentCompleted },
+      })
+      if (!currentCompleted) {
+        setActiveTab('completed')
+      }
+    } catch (error) {
+      console.error('完了状態の更新に失敗しました:', error)
+    }
+  }
+
+  const filterTodo = todos
+    .filter((todo) =>
+      todo.title.toLowerCase().includes(filterTodos.toLowerCase())
+    )
+    .filter((todo) => {
+      if (activeTab === 'all') return true
+      if (activeTab === 'completed') return todo.completed
+      if (activeTab === 'active') return !todo.completed
+      return true
+    })
 
   useEffect(() => {
     if (data?.todos) {
-      setTodos(data.todos)
+      const todosWithCompleted = data.todos.map((todo) => ({
+        ...todo,
+        completed: todo.completed ?? false,
+      }))
+      setTodos(todosWithCompleted)
     }
   }, [data])
 
@@ -35,6 +72,38 @@ export const TodoList = () => {
           Todoを作成
         </button>
       </Link>
+      <div className="flex space-x-2 mt-4">
+        <button
+          className={`flex-1 py-2 px-4 rounded-md transition ${
+            activeTab === 'all'
+              ? 'bg-black text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+          onClick={() => setActiveTab('all')}
+        >
+          すべて
+        </button>
+        <button
+          className={`flex-1 py-2 px-4 rounded-md transition ${
+            activeTab === 'active'
+              ? 'bg-black text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+          onClick={() => setActiveTab('active')}
+        >
+          未完了
+        </button>
+        <button
+          className={`flex-1 py-2 px-4 rounded-md transition ${
+            activeTab === 'completed'
+              ? 'bg-black text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+          onClick={() => setActiveTab('completed')}
+        >
+          完了
+        </button>
+      </div>
       <input
         type="text"
         placeholder="検索"
@@ -46,10 +115,32 @@ export const TodoList = () => {
         {filterTodo.map((todo, index) => (
           <li
             key={index}
-            className="flex justify-between items-center p-4 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer"
-            onClick={() => router.push(`/todo/${todo.id}`)}
+            className="flex justify-between items-center p-4 border border-gray-300 rounded-md hover:bg-gray-50"
           >
-            <span className="flex-grow text-lg">{todo.title}</span>
+            <div className="flex items-center space-x-4 flex-grow">
+              <div className="flex-shrink-0">
+                <input
+                  type="checkbox"
+                  checked={todo.completed}
+                  onChange={() =>
+                    handleToggleCompleted(todo.id, todo.completed)
+                  }
+                  className="w-5 h-5 rounded border-gray-300 text-black focus:ring-black"
+                />
+              </div>
+              <div
+                className="flex-grow cursor-pointer"
+                onClick={() => router.push(`/todo/${todo.id}`)}
+              >
+                <span
+                  className={`text-lg ${
+                    todo.completed ? 'line-through text-gray-500' : ''
+                  }`}
+                >
+                  {todo.title}
+                </span>
+              </div>
+            </div>
             <div className="flex space-x-4">
               <Link
                 href={`/todo/edit/${todo.id}`}
