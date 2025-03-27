@@ -4,11 +4,12 @@ import React from 'react'
 type Props = {
   children: React.ReactNode
 }
-export const SignInedPageLayout = ({ children }: Props) => {
+
+export const PageRootLayout = ({ children }: Props) => {
   return (
-    <div>
+    <>
       <Header />
       {children}
-    </div>
+    </>
   )
 }

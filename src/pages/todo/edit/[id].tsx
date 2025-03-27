@@ -1,4 +1,4 @@
-import { SignInedPageLayout } from '@/components/page/layout/SignInedPageLayout'
+import { PageRootLayout } from '@/components/page/layout/PageRootLayout'
 import { TodoEditForm } from '@/components/TodoEditForm'
 import { useTodoQuery } from '@/generated/graphql'
 import { useRouter } from 'next/router'
@@ -15,9 +15,9 @@ const TodoEditPage = () => {
   if (!data?.todo) return <div>Todo not found</div>
 
   return (
-    <SignInedPageLayout>
+    <PageRootLayout>
       <TodoEditForm todo={data.todo} />
-    </SignInedPageLayout>
+    </PageRootLayout>
   )
 }
 

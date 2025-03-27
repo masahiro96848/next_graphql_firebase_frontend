@@ -1,4 +1,4 @@
-import { GuestPageLayout } from '@/components/page/layout/GuestPageLayout'
+import { PageRootLayout } from '@/components/page/layout/PageRootLayout'
 import { Button } from '@/components/ui/button'
 import { getAuth, signOut } from 'firebase/auth'
 import { useRouter } from 'next/router'
@@ -17,9 +17,9 @@ export default function Page() {
       })
   }
   return (
-    <GuestPageLayout>
+    <PageRootLayout>
       <h1>Home</h1>
       <Button onClick={handleSignOut}>ログアウト</Button>
-    </GuestPageLayout>
+    </PageRootLayout>
   )
 }

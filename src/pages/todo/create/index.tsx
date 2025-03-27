@@ -1,12 +1,12 @@
 import { TodoCreateForm } from '@/components/TodoCreateForm'
-import { SignInedPageLayout } from '@/components/page/layout/SignInedPageLayout'
+import { PageRootLayout } from '@/components/page/layout/PageRootLayout'
 import React from 'react'
 
 const TodoPage = () => {
   return (
-    <SignInedPageLayout>
+    <PageRootLayout>
       <TodoCreateForm />
-    </SignInedPageLayout>
+    </PageRootLayout>
   )
 }
 
