@@ -1,49 +1,33 @@
-import { useUpdateTodoMutation } from '@/generated/graphql'
-import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { TodoFormType } from '@/common/types'
 
-type TodoEditFormProps = {
-  todo: TodoFormType
+type TodoFormProps = {
+  onSubmit: (data: TodoFormType) => Promise<void>
+  defaultValues?: TodoFormType
+  submitButtonText: string
+  title: string
 }
 
-export const TodoEditForm = ({ todo }: TodoEditFormProps) => {
-  const router = useRouter()
-  const [updateTodo] = useUpdateTodoMutation()
-
+export const TodoForm = ({
+  onSubmit,
+  defaultValues,
+  submitButtonText,
+  title,
+}: TodoFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<TodoFormType>({
-    defaultValues: todo,
+    defaultValues,
   })
-
-  const handleUpdateTodo = async (data: TodoFormType) => {
-    try {
-      await updateTodo({
-        variables: {
-          id: todo.id as string,
-          input: {
-            title: data.title,
-            description: data.description,
-          },
-        },
-      })
-      router.push('/todo')
-    } catch (e) {
-      if (e) {
-        console.log(e)
-      }
-    }
-  }
 
   return (
     <div className="w-full max-w-md bg-white p-8 shadow-md rounded-lg mx-auto mt-8 mb-8">
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-        Todo編集
+        {title}
       </h2>
-      <form onSubmit={handleSubmit(handleUpdateTodo)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">
             タイトル
@@ -75,7 +59,7 @@ export const TodoEditForm = ({ todo }: TodoEditFormProps) => {
           type="submit"
           className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition"
         >
-          更新する
+          {submitButtonText}
         </button>
       </form>
     </div>

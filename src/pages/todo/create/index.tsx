@@ -1,13 +1,12 @@
-import { TodoCreateForm } from '@/components/TodoCreateForm'
 import { PageRootLayout } from '@/components/organisms/layout/PageRootLayout'
-import React from 'react'
+import { TodoCreatePresenter } from '@/components/pages/todo/create/presenter'
 
-const TodoPage = () => {
+const TodoCreatePage = () => {
   return (
     <PageRootLayout>
-      <TodoCreateForm />
+      <TodoCreatePresenter />
     </PageRootLayout>
   )
 }
 
-export default TodoPage
+export default TodoCreatePage
