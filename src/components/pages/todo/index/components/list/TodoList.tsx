@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { useRouter } from 'next/router'
-import { Todo } from '@/components/pages/todo/index/hooks/useTodos'
+import { Todo } from '@/models/todo'
 
 type TodoListProps = {
   todos: Todo[]
