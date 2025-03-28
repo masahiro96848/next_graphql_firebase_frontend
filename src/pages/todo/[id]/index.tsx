@@ -1,15 +1,11 @@
 import { PageRootLayout } from '@/components/organisms/layout/PageRootLayout'
-import { TodoDetailForm } from '@/components/TodoDetailForm'
-import { useRouter } from 'next/router'
+import { TodoDetailPresenter } from '@/components/pages/todo/detail/presenter'
 import React from 'react'
 
 const TodoDetailPage = () => {
-  const router = useRouter()
-  const { id } = router.query
-
   return (
     <PageRootLayout>
-      <TodoDetailForm id={id as string} />
+      <TodoDetailPresenter />
     </PageRootLayout>
   )
 }
