@@ -1,5 +1,5 @@
-query Todo($id: String!) {
-  todo(id: $id) {
+query Todos {
+  todos {
     id
     title
     description

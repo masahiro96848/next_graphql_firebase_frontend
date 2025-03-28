@@ -12,16 +12,3 @@ mutation UpdateTodo($id: String!, $input: UpdateTodoInput!) {
     description
   }
 }
-
-mutation DeleteTodo($id: String!) {
-  deleteTodo(id: $id) {
-    id
-  }
-}
-
-mutation UpdateCompleted($id: String!, $completed: Boolean!) {
-  updateCompleted(id: $id, completed: $completed) {
-    id
-    completed
-  }
-}
