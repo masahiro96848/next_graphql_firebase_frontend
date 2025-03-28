@@ -1,69 +1,29 @@
-import {
-  useDeleteTodoMutation,
-  useTodosQuery,
-  useUpdateCompletedMutation,
-} from '@/generated/graphql'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { useRouter } from 'next/router'
+import { Todo } from '@/components/pages/todo/index/hooks/useTodos'
 
-type TabType = 'all' | 'completed' | 'active'
+type TodoListProps = {
+  todos: Todo[]
+  loading: boolean
+  activeTab: string
+  handleDeleteTodo: (id: string) => void
+  handleToggleCompleted: (id: string, completed: boolean) => void
+  setFilterTodos: (value: string) => void
+  setActiveTab: (tab: 'all' | 'active' | 'completed') => void
+}
 
-export const TodoList = () => {
-  const [deleteTodo] = useDeleteTodoMutation()
-  const [updateCompleted] = useUpdateCompletedMutation()
-  const [todos, setTodos] = useState<
-    { id: string; title: string; completed: boolean }[]
-  >([])
-  const [filterTodos, setFilterTodos] = useState('')
-  const [activeTab, setActiveTab] = useState<TabType>('all')
-
-  const { data } = useTodosQuery()
+export const TodoList = ({
+  todos,
+  loading,
+  activeTab,
+  handleDeleteTodo,
+  handleToggleCompleted,
+  setFilterTodos,
+  setActiveTab,
+}: TodoListProps) => {
   const router = useRouter()
-
-  const handleDeleteTodo = (id: string) => {
-    if (confirm('本当に削除しますか？')) {
-      deleteTodo({ variables: { id } })
-    }
-  }
-
-  const handleToggleCompleted = async (
-    id: string,
-    currentCompleted: boolean
-  ) => {
-    try {
-      await updateCompleted({
-        variables: { id, completed: !currentCompleted },
-      })
-      if (!currentCompleted) {
-        setActiveTab('completed')
-      }
-    } catch (error) {
-      console.error('完了状態の更新に失敗しました:', error)
-    }
-  }
-
-  const filterTodo = todos
-    .filter((todo) =>
-      todo.title.toLowerCase().includes(filterTodos.toLowerCase())
-    )
-    .filter((todo) => {
-      if (activeTab === 'all') return true
-      if (activeTab === 'completed') return todo.completed
-      if (activeTab === 'active') return !todo.completed
-      return true
-    })
-
-  useEffect(() => {
-    if (data?.todos) {
-      const todosWithCompleted = data.todos.map((todo) => ({
-        ...todo,
-        completed: todo.completed ?? false,
-      }))
-      setTodos(todosWithCompleted)
-    }
-  }, [data])
+  if (loading) return <div>Loading...</div>
 
   return (
     <div className="w-full max-w-md mx-auto pt-16">
@@ -107,14 +67,13 @@ export const TodoList = () => {
       <input
         type="text"
         placeholder="検索"
-        value={filterTodos}
         onChange={(e) => setFilterTodos(e.target.value)}
         className="mt-4 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <ul className="mt-4 space-y-2">
-        {filterTodo.map((todo, index) => (
+        {todos.map((todo) => (
           <li
-            key={index}
+            key={todo.id}
             className="flex justify-between items-center p-4 border border-gray-300 rounded-md hover:bg-gray-50"
           >
             <div className="flex items-center space-x-4 flex-grow">

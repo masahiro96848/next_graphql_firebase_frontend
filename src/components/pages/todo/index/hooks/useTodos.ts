@@ -6,14 +6,17 @@ import {
 import { useEffect, useState } from 'react'
 
 type TabType = 'all' | 'completed' | 'active'
+export type Todo = {
+  id: string
+  title: string
+  completed: boolean
+}
 
 export const useTodos = () => {
-  const { data, loading, error } = useTodosQuery()
+  const { data, loading } = useTodosQuery()
   const [deleteTodo] = useDeleteTodoMutation()
   const [updateCompleted] = useUpdateCompletedMutation()
-  const [todos, setTodos] = useState<
-    { id: string; title: string; completed: boolean }[]
-  >([])
+  const [todos, setTodos] = useState<Todo[]>([])
   const [filterTodos, setFilterTodos] = useState('')
   const [activeTab, setActiveTab] = useState<TabType>('all')
 
@@ -31,9 +34,6 @@ export const useTodos = () => {
       await updateCompleted({
         variables: { id, completed: !currentCompleted },
       })
-      if (!currentCompleted) {
-        setActiveTab('completed')
-      }
     } catch (error) {
       console.error('完了状態の更新に失敗しました:', error)
     }
@@ -63,11 +63,10 @@ export const useTodos = () => {
   return {
     todos: filterTodo,
     loading,
-    error,
+    activeTab,
     handleDeleteTodo,
     handleToggleCompleted,
     setFilterTodos,
     setActiveTab,
-    activeTab,
   }
 }
