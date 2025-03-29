@@ -1,4 +1,4 @@
-import { Header } from '@/components/nav/Header'
+import { Header } from '@/components/organisms/layout/Header'
 import React from 'react'
 
 type Props = {
