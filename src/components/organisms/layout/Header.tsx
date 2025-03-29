@@ -2,33 +2,53 @@ import Link from 'next/link'
 import { Button } from '@/components/atoms/button'
 import { useAuth } from '@/hooks/useAuth'
 import { useAuthUserContext } from '@/provider/auth/AuthUserContext'
+import { Menu } from 'lucide-react'
 
-export const Header = () => {
+type Props = {
+  toggleSidebar: () => void
+}
+export const Header = ({ toggleSidebar }: Props) => {
   const { authUser } = useAuthUserContext()
   const { firebaseSignOut } = useAuth()
 
   return (
-    <header className="border-b">
+    <header className="bg-sky-500 text-white p-4 flex justify-between items-center">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold">
-          ETasks
-        </Link>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            className="text-white"
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+          <div className="text-xl font-bold">TaskApp</div>
+        </div>
         <nav className="flex items-center gap-4">
           {authUser ? (
             <>
-              <Button size="sm">
-                <Link href="/dashboard">ダッシュボード</Link>
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => firebaseSignOut()}
-              >
+              <Link href="#" className="hover:underline">
+                TOP
+              </Link>
+              <Link href="#" className="hover:underline">
+                タスク管理ページ
+              </Link>
+              <Link href="#" className="hover:underline">
+                プロフィール編集
+              </Link>
+              <Link href="/dashboard">ダッシュボード</Link>
+              <Button color="black" size="sm" onClick={() => firebaseSignOut()}>
                 ログアウト
               </Button>
             </>
           ) : (
             <>
+              <Button size="sm">
+                <Link href="/" className="hover:underline">
+                  TOP
+                </Link>
+              </Button>
               <Button size="sm">
                 <Link href="/signin">ログイン</Link>
               </Button>
