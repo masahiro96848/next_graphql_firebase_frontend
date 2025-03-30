@@ -1,24 +1,24 @@
 import { useForm } from 'react-hook-form'
-import { TodoFormType } from '@/common/types'
+import { TaskFormType } from '@/common/types'
 
-type TodoFormProps = {
-  onSubmit: (data: TodoFormType) => Promise<void>
-  defaultValues?: TodoFormType
+type TaskFormProps = {
+  onSubmit: (data: TaskFormType) => Promise<void>
+  defaultValues?: TaskFormType
   submitButtonText: string
   title: string
 }
 
-export const TodoForm = ({
+export const TaskForm = ({
   onSubmit,
   defaultValues,
   submitButtonText,
   title,
-}: TodoFormProps) => {
+}: TaskFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<TodoFormType>({
+  } = useForm<TaskFormType>({
     defaultValues,
   })
 

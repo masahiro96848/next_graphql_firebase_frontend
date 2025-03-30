@@ -1,13 +1,13 @@
 import { PageRootLayout } from '@/components/organisms/layout/PageRootLayout'
-import { TodoEditPresenter } from '@/components/pages/todo/edit/presenter'
 import React from 'react'
+import { TaskAppPresenter } from '@/components/pages/task/index/presenter'
 
-const TodoEditPage = () => {
+const TaskPage = () => {
   return (
     <PageRootLayout>
-      <TodoEditPresenter />
+      <TaskAppPresenter />
     </PageRootLayout>
   )
 }
 
-export default TodoEditPage
+export default TaskPage

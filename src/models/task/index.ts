@@ -1,8 +1,8 @@
-export type Todo = {
+export type Task = {
   id: string
   title: string
   description?: string | null
   completed: boolean
 }
 
-export type TodoTabType = 'all' | 'completed' | 'active'
+export type TaskTabType = 'all' | 'completed' | 'active'

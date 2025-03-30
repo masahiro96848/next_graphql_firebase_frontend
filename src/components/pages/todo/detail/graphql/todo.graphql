@@ -1,8 +1,0 @@
-query Todo($id: String!) {
-  todo(id: $id) {
-    id
-    title
-    description
-    completed
-  }
-}

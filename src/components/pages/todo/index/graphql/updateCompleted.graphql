@@ -1,6 +1,0 @@
-mutation UpdateCompleted($id: String!, $completed: Boolean!) {
-  updateCompleted(id: $id, completed: $completed) {
-    id
-    completed
-  }
-}

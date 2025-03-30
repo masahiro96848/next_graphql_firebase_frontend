@@ -25,28 +25,9 @@ export type CreateSignUpInput = {
   password: Scalars['String']['input'];
 };
 
-export type CreateTodoInput = {
-  description?: InputMaybe<Scalars['String']['input']>;
-  title: Scalars['String']['input'];
-};
-
 export type Mutation = {
-  createTodo: TodoModel;
-  deleteTodo: TodoModel;
   signIn: UserModel;
   signUp: UserModel;
-  updateCompleted: TodoModel;
-  updateTodo: TodoModel;
-};
-
-
-export type MutationCreateTodoArgs = {
-  input: CreateTodoInput;
-};
-
-
-export type MutationDeleteTodoArgs = {
-  id: Scalars['String']['input'];
 };
 
 
@@ -60,26 +41,14 @@ export type MutationSignUpArgs = {
   input: CreateSignUpInput;
 };
 
-
-export type MutationUpdateCompletedArgs = {
-  completed: Scalars['Boolean']['input'];
-  id: Scalars['String']['input'];
-};
-
-
-export type MutationUpdateTodoArgs = {
-  id: Scalars['String']['input'];
-  input: UpdateTodoInput;
-};
-
 export type Query = {
-  todo: TodoModel;
-  todos: Array<TodoModel>;
+  task: TaskModel;
+  tasks: Array<TaskModel>;
   user: UserModel;
 };
 
 
-export type QueryTodoArgs = {
+export type QueryTaskArgs = {
   id: Scalars['String']['input'];
 };
 
@@ -88,7 +57,7 @@ export type QueryUserArgs = {
   id: Scalars['String']['input'];
 };
 
-export type TodoModel = {
+export type TaskModel = {
   completed: Scalars['Boolean']['output'];
   createdAt: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
@@ -96,11 +65,6 @@ export type TodoModel = {
   title: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
   userId: Scalars['String']['output'];
-};
-
-export type UpdateTodoInput = {
-  description?: InputMaybe<Scalars['String']['input']>;
-  title: Scalars['String']['input'];
 };
 
 export type UserModel = {
@@ -126,47 +90,10 @@ export type SignUpMutationVariables = Exact<{
 
 export type SignUpMutation = { signUp: { email: string, name: string, firebaseUId: string } };
 
-export type CreateTodoMutationVariables = Exact<{
-  input: CreateTodoInput;
-}>;
+export type TasksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CreateTodoMutation = { createTodo: { title: string, description?: string | null, userId: string } };
-
-export type TodoQueryVariables = Exact<{
-  id: Scalars['String']['input'];
-}>;
-
-
-export type TodoQuery = { todo: { id: string, title: string, description?: string | null, completed: boolean } };
-
-export type UpdateTodoMutationVariables = Exact<{
-  id: Scalars['String']['input'];
-  input: UpdateTodoInput;
-}>;
-
-
-export type UpdateTodoMutation = { updateTodo: { title: string, description?: string | null } };
-
-export type DeleteTodoMutationVariables = Exact<{
-  id: Scalars['String']['input'];
-}>;
-
-
-export type DeleteTodoMutation = { deleteTodo: { id: string } };
-
-export type TodosQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type TodosQuery = { todos: Array<{ id: string, title: string, description?: string | null, completed: boolean }> };
-
-export type UpdateCompletedMutationVariables = Exact<{
-  id: Scalars['String']['input'];
-  completed: Scalars['Boolean']['input'];
-}>;
-
-
-export type UpdateCompletedMutation = { updateCompleted: { id: string, completed: boolean } };
+export type TasksQuery = { tasks: Array<{ id: string, title: string, description?: string | null, completed: boolean }> };
 
 
 export const SignInDocument = gql`
@@ -239,44 +166,9 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
-export const CreateTodoDocument = gql`
-    mutation CreateTodo($input: CreateTodoInput!) {
-  createTodo(input: $input) {
-    title
-    description
-    userId
-  }
-}
-    `;
-export type CreateTodoMutationFn = Apollo.MutationFunction<CreateTodoMutation, CreateTodoMutationVariables>;
-
-/**
- * __useCreateTodoMutation__
- *
- * To run a mutation, you first call `useCreateTodoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateTodoMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createTodoMutation, { data, loading, error }] = useCreateTodoMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateTodoMutation(baseOptions?: Apollo.MutationHookOptions<CreateTodoMutation, CreateTodoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateTodoMutation, CreateTodoMutationVariables>(CreateTodoDocument, options);
-      }
-export type CreateTodoMutationHookResult = ReturnType<typeof useCreateTodoMutation>;
-export type CreateTodoMutationResult = Apollo.MutationResult<CreateTodoMutation>;
-export type CreateTodoMutationOptions = Apollo.BaseMutationOptions<CreateTodoMutation, CreateTodoMutationVariables>;
-export const TodoDocument = gql`
-    query Todo($id: String!) {
-  todo(id: $id) {
+export const TasksDocument = gql`
+    query Tasks {
+  tasks {
     id
     title
     description
@@ -286,179 +178,33 @@ export const TodoDocument = gql`
     `;
 
 /**
- * __useTodoQuery__
+ * __useTasksQuery__
  *
- * To run a query within a React component, call `useTodoQuery` and pass it any options that fit your needs.
- * When your component renders, `useTodoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useTasksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTasksQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useTodoQuery({
+ * const { data, loading, error } = useTasksQuery({
  *   variables: {
- *      id: // value for 'id'
  *   },
  * });
  */
-export function useTodoQuery(baseOptions: Apollo.QueryHookOptions<TodoQuery, TodoQueryVariables> & ({ variables: TodoQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useTasksQuery(baseOptions?: Apollo.QueryHookOptions<TasksQuery, TasksQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<TodoQuery, TodoQueryVariables>(TodoDocument, options);
+        return Apollo.useQuery<TasksQuery, TasksQueryVariables>(TasksDocument, options);
       }
-export function useTodoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TodoQuery, TodoQueryVariables>) {
+export function useTasksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TasksQuery, TasksQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<TodoQuery, TodoQueryVariables>(TodoDocument, options);
+          return Apollo.useLazyQuery<TasksQuery, TasksQueryVariables>(TasksDocument, options);
         }
-export function useTodoSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<TodoQuery, TodoQueryVariables>) {
+export function useTasksSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<TasksQuery, TasksQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<TodoQuery, TodoQueryVariables>(TodoDocument, options);
+          return Apollo.useSuspenseQuery<TasksQuery, TasksQueryVariables>(TasksDocument, options);
         }
-export type TodoQueryHookResult = ReturnType<typeof useTodoQuery>;
-export type TodoLazyQueryHookResult = ReturnType<typeof useTodoLazyQuery>;
-export type TodoSuspenseQueryHookResult = ReturnType<typeof useTodoSuspenseQuery>;
-export type TodoQueryResult = Apollo.QueryResult<TodoQuery, TodoQueryVariables>;
-export const UpdateTodoDocument = gql`
-    mutation UpdateTodo($id: String!, $input: UpdateTodoInput!) {
-  updateTodo(id: $id, input: $input) {
-    title
-    description
-  }
-}
-    `;
-export type UpdateTodoMutationFn = Apollo.MutationFunction<UpdateTodoMutation, UpdateTodoMutationVariables>;
-
-/**
- * __useUpdateTodoMutation__
- *
- * To run a mutation, you first call `useUpdateTodoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateTodoMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateTodoMutation, { data, loading, error }] = useUpdateTodoMutation({
- *   variables: {
- *      id: // value for 'id'
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpdateTodoMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTodoMutation, UpdateTodoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateTodoMutation, UpdateTodoMutationVariables>(UpdateTodoDocument, options);
-      }
-export type UpdateTodoMutationHookResult = ReturnType<typeof useUpdateTodoMutation>;
-export type UpdateTodoMutationResult = Apollo.MutationResult<UpdateTodoMutation>;
-export type UpdateTodoMutationOptions = Apollo.BaseMutationOptions<UpdateTodoMutation, UpdateTodoMutationVariables>;
-export const DeleteTodoDocument = gql`
-    mutation DeleteTodo($id: String!) {
-  deleteTodo(id: $id) {
-    id
-  }
-}
-    `;
-export type DeleteTodoMutationFn = Apollo.MutationFunction<DeleteTodoMutation, DeleteTodoMutationVariables>;
-
-/**
- * __useDeleteTodoMutation__
- *
- * To run a mutation, you first call `useDeleteTodoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteTodoMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteTodoMutation, { data, loading, error }] = useDeleteTodoMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteTodoMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTodoMutation, DeleteTodoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteTodoMutation, DeleteTodoMutationVariables>(DeleteTodoDocument, options);
-      }
-export type DeleteTodoMutationHookResult = ReturnType<typeof useDeleteTodoMutation>;
-export type DeleteTodoMutationResult = Apollo.MutationResult<DeleteTodoMutation>;
-export type DeleteTodoMutationOptions = Apollo.BaseMutationOptions<DeleteTodoMutation, DeleteTodoMutationVariables>;
-export const TodosDocument = gql`
-    query Todos {
-  todos {
-    id
-    title
-    description
-    completed
-  }
-}
-    `;
-
-/**
- * __useTodosQuery__
- *
- * To run a query within a React component, call `useTodosQuery` and pass it any options that fit your needs.
- * When your component renders, `useTodosQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useTodosQuery({
- *   variables: {
- *   },
- * });
- */
-export function useTodosQuery(baseOptions?: Apollo.QueryHookOptions<TodosQuery, TodosQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<TodosQuery, TodosQueryVariables>(TodosDocument, options);
-      }
-export function useTodosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TodosQuery, TodosQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<TodosQuery, TodosQueryVariables>(TodosDocument, options);
-        }
-export function useTodosSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<TodosQuery, TodosQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<TodosQuery, TodosQueryVariables>(TodosDocument, options);
-        }
-export type TodosQueryHookResult = ReturnType<typeof useTodosQuery>;
-export type TodosLazyQueryHookResult = ReturnType<typeof useTodosLazyQuery>;
-export type TodosSuspenseQueryHookResult = ReturnType<typeof useTodosSuspenseQuery>;
-export type TodosQueryResult = Apollo.QueryResult<TodosQuery, TodosQueryVariables>;
-export const UpdateCompletedDocument = gql`
-    mutation UpdateCompleted($id: String!, $completed: Boolean!) {
-  updateCompleted(id: $id, completed: $completed) {
-    id
-    completed
-  }
-}
-    `;
-export type UpdateCompletedMutationFn = Apollo.MutationFunction<UpdateCompletedMutation, UpdateCompletedMutationVariables>;
-
-/**
- * __useUpdateCompletedMutation__
- *
- * To run a mutation, you first call `useUpdateCompletedMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateCompletedMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateCompletedMutation, { data, loading, error }] = useUpdateCompletedMutation({
- *   variables: {
- *      id: // value for 'id'
- *      completed: // value for 'completed'
- *   },
- * });
- */
-export function useUpdateCompletedMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCompletedMutation, UpdateCompletedMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateCompletedMutation, UpdateCompletedMutationVariables>(UpdateCompletedDocument, options);
-      }
-export type UpdateCompletedMutationHookResult = ReturnType<typeof useUpdateCompletedMutation>;
-export type UpdateCompletedMutationResult = Apollo.MutationResult<UpdateCompletedMutation>;
-export type UpdateCompletedMutationOptions = Apollo.BaseMutationOptions<UpdateCompletedMutation, UpdateCompletedMutationVariables>;
+export type TasksQueryHookResult = ReturnType<typeof useTasksQuery>;
+export type TasksLazyQueryHookResult = ReturnType<typeof useTasksLazyQuery>;
+export type TasksSuspenseQueryHookResult = ReturnType<typeof useTasksSuspenseQuery>;
+export type TasksQueryResult = Apollo.QueryResult<TasksQuery, TasksQueryVariables>;

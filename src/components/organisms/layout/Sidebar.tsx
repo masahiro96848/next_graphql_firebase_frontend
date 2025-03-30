@@ -1,7 +1,7 @@
-import type { Folder } from '@/components/pages/todo/TaskApp'
+import type { Folder } from '@/components/pages/task/index/components/TaskApp'
 import { Button } from '@/components/atoms/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import TaskFolder from '@/components/pages/todo/TaskFolder'
+import TaskFolder from '@/components/pages/task/index/components/TaskFolder'
 import { cn } from '@/lib/utils'
 
 type SidebarProps = {

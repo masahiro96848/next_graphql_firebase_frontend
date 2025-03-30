@@ -1,6 +1,6 @@
 import { Header } from '@/components/organisms/layout/Header'
 import React, { useState } from 'react'
-import TaskApp from '@/components/pages/todo/TaskApp'
+import TaskApp from '@/components/pages/task/index/components/TaskApp'
 
 type Props = {
   children: React.ReactNode

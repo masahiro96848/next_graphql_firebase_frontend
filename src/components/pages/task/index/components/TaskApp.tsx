@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Sidebar from '@/components/organisms/layout/Sidebar'
-import TaskCard from '@/components/pages/todo/TaskCard'
+import TaskCard from '@/components/pages/task/index/components/TaskCard'
 import { Button } from '@/components/atoms/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 

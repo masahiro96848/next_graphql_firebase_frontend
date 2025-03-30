@@ -27,7 +27,7 @@ export type SignUpFormType = {
   password: string
 }
 
-export type TodoFormType = {
+export type TaskFormType = {
   id: string
   title: string
   description?: string | null

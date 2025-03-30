@@ -22,7 +22,7 @@ export default function Page() {
       <div className="flex flex-col gap-8 mt-8">
         <div className="flex items-center gap-8">
           <h1>Home</h1>
-          <Link href="/todo">Todo</Link>
+          <Link href="/task">Task</Link>
         </div>
         <Button onClick={handleSignOut} className="w-fit">
           ログアウト

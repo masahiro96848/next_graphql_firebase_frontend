@@ -1,6 +1,6 @@
 import { X } from 'lucide-react'
 import type { TaskCardType } from './TaskApp'
-import TaskList from './TaskList'
+import TaskList from '@/components/pages/task/index/components/TaskList'
 import { Card, CardContent, CardHeader } from '@/components/atoms/card'
 import { Button } from '@/components/atoms/button'
 

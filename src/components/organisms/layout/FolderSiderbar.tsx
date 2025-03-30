@@ -1,5 +1,5 @@
 import { Edit, Settings } from 'lucide-react'
-import type { Folder } from '@/components/pages/todo/TaskApp'
+import type { Folder } from '@/components/pages/task/index/components/TaskApp'
 import { Button } from '@/components/atoms/button'
 
 interface FolderSidebarProps {

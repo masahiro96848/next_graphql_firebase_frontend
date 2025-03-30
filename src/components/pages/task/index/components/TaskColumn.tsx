@@ -1,5 +1,5 @@
-import type { TaskCard as TaskCardType } from './TaskApp'
-import TaskCard from './TaskCard'
+import type { TaskCard as TaskCardType } from '@/components/pages/task/index/components/TaskApp'
+import TaskCard from '@/components/pages/task/index/components/TaskCard'
 
 interface TaskColumnsProps {
   taskCards: TaskCardType[]
