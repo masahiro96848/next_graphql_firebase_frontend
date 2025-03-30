@@ -27,7 +27,7 @@ type Props = {
 }
 
 export default function TaskApp({ isSidebarOpen }: Props) {
-  const [folders, setFolders] = useState<Folder[]>([
+  const [folders] = useState<Folder[]>([
     { id: '1', name: '重要なことにやるリスト' },
     { id: '2', name: '重要・緊急' },
     { id: '3', name: 'フォルダー' },
@@ -35,7 +35,7 @@ export default function TaskApp({ isSidebarOpen }: Props) {
     { id: '5', name: 'プライベート' },
   ])
 
-  const [taskCards, setTaskCards] = useState<TaskCardType[]>([
+  const [taskCards] = useState<TaskCardType[]>([
     {
       id: '1',
       title: 'JavaScript',

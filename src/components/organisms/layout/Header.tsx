@@ -5,7 +5,7 @@ import { useAuthUserContext } from '@/provider/auth/AuthUserContext'
 import { Menu } from 'lucide-react'
 
 type Props = {
-  toggleSidebar: () => void
+  toggleSidebar?: () => void
 }
 
 export const Header = ({ toggleSidebar }: Props) => {

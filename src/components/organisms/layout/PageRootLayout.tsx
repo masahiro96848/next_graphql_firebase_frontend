@@ -6,7 +6,7 @@ type Props = {
   children: React.ReactNode
 }
 
-export const PageRootLayout = ({ children }: Props) => {
+export const PageRootLayout = ({}: Props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
   const toggleSidebar = () => {
