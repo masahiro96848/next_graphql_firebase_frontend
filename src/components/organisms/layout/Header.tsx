@@ -7,12 +7,13 @@ import { Menu } from 'lucide-react'
 type Props = {
   toggleSidebar: () => void
 }
+
 export const Header = ({ toggleSidebar }: Props) => {
   const { authUser } = useAuthUserContext()
   const { firebaseSignOut } = useAuth()
 
   return (
-    <header className="bg-sky-500 text-white p-4 flex justify-between items-center">
+    <header className="bg-sky-500 text-white p-4">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Button
@@ -23,9 +24,10 @@ export const Header = ({ toggleSidebar }: Props) => {
           >
             <Menu className="h-5 w-5" />
           </Button>
-          <div className="text-xl font-bold">TaskApp</div>
+          <div className="text-xl font-bold">ETask</div>
         </div>
-        <nav className="flex items-center gap-4">
+        {/* デスクトップ表示時のナビゲーション */}
+        <nav className="hidden md:flex items-center gap-4">
           {authUser ? (
             <>
               <Link href="#" className="hover:underline">
@@ -58,6 +60,14 @@ export const Header = ({ toggleSidebar }: Props) => {
             </>
           )}
         </nav>
+        {/* モバイル表示時のログアウトボタン */}
+        <div className="md:hidden">
+          {authUser && (
+            <Button color="black" size="sm" onClick={() => firebaseSignOut()}>
+              ログアウト
+            </Button>
+          )}
+        </div>
       </div>
     </header>
   )

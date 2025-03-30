@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Sidebar from '@/components/organisms/layout/Sidebar'
 import TaskCard from '@/components/pages/todo/TaskCard'
 import { Button } from '@/components/atoms/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export type Folder = {
   id: string
@@ -72,18 +73,45 @@ export default function TaskApp({ isSidebarOpen }: Props) {
   return (
     <div className="flex flex-col h-screen bg-[#f8f6e9]">
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar isOpen={isSidebarOpen} folders={folders} />
+        {/* デスクトップ表示時のみサイドバーを表示 */}
+        <div className="hidden md:block">
+          <Sidebar isOpen={isSidebarOpen} folders={folders} />
+        </div>
         <div className="flex-1 p-4 overflow-x-auto">
-          <div className="flex justify-between mb-4">
-            <div></div>
-            <Button variant="ghost" className="text-blue-500 text-sm">
-              + 新しいカードを追加
-            </Button>
+          {/* モバイル表示時のタブ */}
+          <div className="md:hidden mb-4">
+            <Tabs defaultValue={folders[0].id} className="w-full">
+              <TabsList className="w-full overflow-x-auto">
+                {folders.map((folder) => (
+                  <TabsTrigger key={folder.id} value={folder.id}>
+                    {folder.name}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              {folders.map((folder) => (
+                <TabsContent key={folder.id} value={folder.id}>
+                  <div className="flex gap-4">
+                    {taskCards.map((card) => (
+                      <TaskCard key={card.id} card={card} />
+                    ))}
+                  </div>
+                </TabsContent>
+              ))}
+            </Tabs>
           </div>
-          <div className="flex gap-4">
-            {taskCards.map((card) => (
-              <TaskCard key={card.id} card={card} />
-            ))}
+          {/* デスクトップ表示時のタスクカード */}
+          <div className="hidden md:block">
+            <div className="flex justify-between mb-4">
+              <div></div>
+              <Button variant="ghost" className="text-blue-500 text-sm">
+                + 新しいカードを追加
+              </Button>
+            </div>
+            <div className="flex gap-4">
+              {taskCards.map((card) => (
+                <TaskCard key={card.id} card={card} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

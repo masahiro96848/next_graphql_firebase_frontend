@@ -14,9 +14,9 @@ export const PageRootLayout = ({ children }: Props) => {
   }
 
   return (
-    <>
+    <div className="min-h-screen">
       <Header toggleSidebar={toggleSidebar} />
       <TaskApp isSidebarOpen={isSidebarOpen} />
-    </>
+    </div>
   )
 }

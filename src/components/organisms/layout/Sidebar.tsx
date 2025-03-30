@@ -1,5 +1,3 @@
-'use client'
-
 import type { Folder } from '@/components/pages/todo/TaskApp'
 import { Button } from '@/components/atoms/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
